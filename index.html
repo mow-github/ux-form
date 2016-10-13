@@ -43,72 +43,91 @@
   <script>
     window.onload = function () {
 
-      let fieldsetParent = document.forms[0].children[0];
-
-      for(let i = 1; i <= 13; i++){
-
-        let divContainer          = document.createElement(`div`);
-        let divContainer_class    = document.createAttribute(`class`);
-        divContainer_class.value  = "one";
-        divContainer.setAttributeNode(divContainer_class);
 
 
+      var xmlhttp = new XMLHttpRequest();
+      var url = "data/question.json";
 
-        let h3_parent     = document.createElement(`h3`);
-        let h3_text       = document.createTextNode(`Question ${i}`);
-        h3_parent.appendChild(h3_text);
-        divContainer.appendChild(h3_parent);
-
-        let label         = document.createElement(`label`);
-        let label_text    = document.createTextNode(`True`);
-        let label_attr    = document.createAttribute(`for`);
-        label_attr.value  = `hemsida_${i}_1`;
-        label.appendChild(label_text);
-        label.setAttributeNode(label_attr);
-        divContainer.appendChild(label);
-
-        let input     = document.createElement("input");
-        input.type    = "radio";
-        input.name    = `hemsida_${i}`;
-        input.id      = `hemsida_${i}_1`;
-        input.value   = `1`;
-        divContainer.appendChild(input);
-
-        label         = document.createElement(`label`);
-        label_text    = document.createTextNode(`Unsure`);
-        label_attr    = document.createAttribute(`for`);
-        label_attr.value  = `hemsida_${i}_2`;
-        label.appendChild(label_text);
-        label.setAttributeNode(label_attr);
-        divContainer.appendChild(label);
-
-        input         = document.createElement("input");
-        input.type    = "radio";
-        input.name    = `hemsida_${i}`;
-        input.id      = `hemsida_${i}_2`;
-        input.value   = `0`;
-        divContainer.appendChild(input);
-
-        label         = document.createElement(`label`);
-        label_text    = document.createTextNode(`False`);
-        label_attr    = document.createAttribute(`for`);
-        label_attr.value  = `hemsida_${i}_2`;
-        label.appendChild(label_text);
-        label.setAttributeNode(label_attr);
-        divContainer.appendChild(label);
-
-        input         = document.createElement("input");
-        input.type    = "radio";
-        input.name    = `hemsida_${i}`;
-        input.id      = `hemsida_${i}_3`;
-        input.value   = `-1`;
-        divContainer.appendChild(input);
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var myArr = JSON.parse(this.responseText);
+          createForm(myArr.questions);
+        }
+      };
+      xmlhttp.open("GET", url, true);
+      xmlhttp.send();
 
 
-        fieldsetParent.appendChild(divContainer);
 
+
+
+
+      function createForm(data) {
+
+        let fieldsetParent = document.forms[0].children[0];
+
+        for(let i = 0; i < data.length; i++){
+
+          let divContainer          = document.createElement(`div`);
+          let divContainer_class    = document.createAttribute(`class`);
+          divContainer_class.value  = "one";
+          divContainer.setAttributeNode(divContainer_class);
+
+          let h3_parent     = document.createElement(`h3`);
+          let h3_text       = document.createTextNode( data[i].question );
+          h3_parent.appendChild(h3_text);
+          divContainer.appendChild(h3_parent);
+
+          let label         = document.createElement(`label`);
+          let label_text    = document.createTextNode(`True`);
+          let label_attr    = document.createAttribute(`for`);
+          label_attr.value  = `hemsida_${i}_1`;
+          label.appendChild(label_text);
+          label.setAttributeNode(label_attr);
+          divContainer.appendChild(label);
+
+          let input     = document.createElement("input");
+          input.type    = "radio";
+          input.name    = `hemsida_${i}`;
+          input.id      = `hemsida_${i}_1`;
+          input.value   = `1`;
+          divContainer.appendChild(input);
+
+          label         = document.createElement(`label`);
+          label_text    = document.createTextNode(`Unsure`);
+          label_attr    = document.createAttribute(`for`);
+          label_attr.value  = `hemsida_${i}_2`;
+          label.appendChild(label_text);
+          label.setAttributeNode(label_attr);
+          divContainer.appendChild(label);
+
+          input         = document.createElement("input");
+          input.type    = "radio";
+          input.name    = `hemsida_${i}`;
+          input.id      = `hemsida_${i}_2`;
+          input.value   = `0`;
+          divContainer.appendChild(input);
+
+          label         = document.createElement(`label`);
+          label_text    = document.createTextNode(`False`);
+          label_attr    = document.createAttribute(`for`);
+          label_attr.value  = `hemsida_${i}_2`;
+          label.appendChild(label_text);
+          label.setAttributeNode(label_attr);
+          divContainer.appendChild(label);
+
+          input         = document.createElement("input");
+          input.type    = "radio";
+          input.name    = `hemsida_${i}`;
+          input.id      = `hemsida_${i}_3`;
+          input.value   = `-1`;
+          divContainer.appendChild(input);
+
+
+          fieldsetParent.appendChild(divContainer);
+
+        }
       }
-
       
       
       let bar       = document.getElementsByClassName("bar");

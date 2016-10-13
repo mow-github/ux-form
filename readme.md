@@ -1,6 +1,6 @@
 # About: User experience question form
 #### Purpose: Answer all questions and get a visual map over how good the web page is 0-100%.
-##### Technologies: HTML5, CSS3, Javascript, JSON
+##### Technologies: HTML5, CSS3, Javascript, AJAX, JSON
 
 ###### Installation example:
 <pre>git clone https://github.com/mow-github/ux-form.git</pre>
