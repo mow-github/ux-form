@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="author" content="">
+  <title>UX graph</title>
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/main.js" async></script>
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+
+
+
+  <svg>
+    <g class="bar">
+      <rect width="0" height="20"></rect>
+      <text x="0" y="9.5" dy=".35em">Web page</text>
+    </g>
+    <g class="bar">
+      <rect width="0" height="20" y="20"></rect>
+      <text x="0" y="28" dy=".35em">Task oriented</text>
+    </g>
+  </svg>
+
+
+  <form>
+    <fieldset>
+      <!-- dynamic content here -->
+      <br>
+      <input type="submit" name="sumbitBtn" id="submitBtn" value="Update graph">
+    </fieldset>
+  </form>
+
+
+  <script>
+    window.onload = function () {
+
+      let fieldsetParent = document.forms[0].children[0];
+
+      for(let i = 1; i <= 13; i++){
+
+        let divContainer          = document.createElement(`div`);
+        let divContainer_class    = document.createAttribute(`class`);
+        divContainer_class.value  = "one";
+        divContainer.setAttributeNode(divContainer_class);
+
+
+
+        let h3_parent     = document.createElement(`h3`);
+        let h3_text       = document.createTextNode(`Question ${i}`);
+        h3_parent.appendChild(h3_text);
+        divContainer.appendChild(h3_parent);
+
+        let label         = document.createElement(`label`);
+        let label_text    = document.createTextNode(`True`);
+        let label_attr    = document.createAttribute(`for`);
+        label_attr.value  = `hemsida_${i}_1`;
+        label.appendChild(label_text);
+        label.setAttributeNode(label_attr);
+        divContainer.appendChild(label);
+
+        let input     = document.createElement("input");
+        input.type    = "radio";
+        input.name    = `hemsida_${i}`;
+        input.id      = `hemsida_${i}_1`;
+        input.value   = `1`;
+        divContainer.appendChild(input);
+
+        label         = document.createElement(`label`);
+        label_text    = document.createTextNode(`Unsure`);
+        label_attr    = document.createAttribute(`for`);
+        label_attr.value  = `hemsida_${i}_2`;
+        label.appendChild(label_text);
+        label.setAttributeNode(label_attr);
+        divContainer.appendChild(label);
+
+        input         = document.createElement("input");
+        input.type    = "radio";
+        input.name    = `hemsida_${i}`;
+        input.id      = `hemsida_${i}_2`;
+        input.value   = `0`;
+        divContainer.appendChild(input);
+
+        label         = document.createElement(`label`);
+        label_text    = document.createTextNode(`False`);
+        label_attr    = document.createAttribute(`for`);
+        label_attr.value  = `hemsida_${i}_2`;
+        label.appendChild(label_text);
+        label.setAttributeNode(label_attr);
+        divContainer.appendChild(label);
+
+        input         = document.createElement("input");
+        input.type    = "radio";
+        input.name    = `hemsida_${i}`;
+        input.id      = `hemsida_${i}_3`;
+        input.value   = `-1`;
+        divContainer.appendChild(input);
+
+
+        fieldsetParent.appendChild(divContainer);
+
+      }
+
+      
+      
+      let bar       = document.getElementsByClassName("bar");
+      let submitBtn = document.getElementById("submitBtn");
+      let totSum    = 0;
+
+      for(let i = 0; i < bar.length; i++){
+        bar[i].addEventListener("click", incFunc, false);
+      }
+      submitBtn.addEventListener("click", updateGraph, false);
+
+      function updateGraph(event){
+        event.preventDefault();
+
+        totSum = 0; /* reset to 0.. so we can calc a new value */
+        let one   = document.getElementsByClassName("one");
+        for(let i = 0; i < one.length; i++){
+
+          let list  = one[i].getElementsByTagName("input");
+          for(let i = 0; i < list.length; i++){
+
+            if( list[i].checked ){
+              totSum += Number(list[i].getAttribute("value"));
+            }
+          }
+
+        }
+        incGraph(totSum);
+      console.log(`totsum: ${totSum}`);
+
+      }
+
+
+      function incGraph(value){
+          let aa = bar[0].children[0].getAttribute("width");
+          bar[0].children[0].setAttribute("width",  value ); // not valid to set -1 ( fix with a if cond: l8r)
+      }
+
+
+
+
+      function incFunc(){
+        let self = this;
+
+        let intervalVar = setInterval(function(){
+          let barValue = Number( self.children[0].getAttribute("width") );
+          if( barValue == 100 ){ return clearInterval(intervalVar) }
+
+          self.children[0].setAttribute("width", barValue += 1);
+          self.children[1].setAttribute("x", barValue+40);
+          console.log( barValue );
+        },50);
+      }
+
+
+
+
+
+    }
+  </script>
+
+</body>
+</html>
